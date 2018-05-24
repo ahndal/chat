@@ -15,39 +15,53 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+ Vue.component('chat', require('./components/Chat.vue'));
+ Vue.component('chat-composer', require('./components/ChatComposer.vue'));
 
 const app = new Vue({
-    el: '#app'
-});
+    el: '#app',
+    data: {
+        chats: ''
+    },
+    created() {
+        const userId = $('meta[name="userId"]').attr('content');
+        const friendId = $('meta[name="friendId"]').attr('content');
 
-
-// Bulma NavBar Burger Script
-document.addEventListener('DOMContentLoaded', function () {
-    // Get all "navbar-burger" elements
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-    
-    // Check if there are any navbar burgers
-    if ($navbarBurgers.length > 0) {
-        
-        // Add a click event on each of them
-        $navbarBurgers.forEach(function ($el) {
-            $el.addEventListener('click', function () {
-                
-                // Get the target from the "data-target" attribute
-                let target = $el.dataset.target;
-                let $target = document.getElementById(target);
-                
-                // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-                $el.classList.toggle('is-active');
-                $target.classList.toggle('is-active');
-                
+        if(friendId !=undefined) {
+            axios.post('/chat/getChat/' + friendId).then((response) => {
+                this.chats = response.data;
             });
-        });
+        }
     }
-    
 });
 
-
-
-require('./bulma-extensions');
+//
+// // Bulma NavBar Burger Script
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Get all "navbar-burger" elements
+//     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+//
+//     // Check if there are any navbar burgers
+//     if ($navbarBurgers.length > 0) {
+//
+//         // Add a click event on each of them
+//         $navbarBurgers.forEach(function ($el) {
+//             $el.addEventListener('click', function () {
+//
+//                 // Get the target from the "data-target" attribute
+//                 let target = $el.dataset.target;
+//                 let $target = document.getElementById(target);
+//
+//                 // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+//                 $el.classList.toggle('is-active');
+//                 $target.classList.toggle('is-active');
+//
+//             });
+//         });
+//     }
+//
+// });
+//
+//
+//
+// require('./bulma-extensions');
